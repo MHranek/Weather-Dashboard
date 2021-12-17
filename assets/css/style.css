@@ -1,0 +1,17 @@
+button {
+    border-radius: 5px;
+    font-size:26px;
+}
+
+input {
+    border-radius: 5px;
+    font-size:30px;
+}
+
+#forecast-cards {
+    height: 200px;
+}
+
+.card {
+    border-width: 3px;
+}

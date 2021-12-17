@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='./assets/css/style.css'>
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Weather Dahsboard</title>
 </head>
-<body>
-    <script src='./assets/js/script.js'></script>
+
+<body class="vh-100">
+    <header class="text-center bg-primary p-3 mb-3">
+        <h1>Weather Dashboard</h1>
+    </header>
+    <main class="row m-2">
+        <section class="col-12 col-md-3 flex-column">
+            <div class="d-flex flex-column border-bottom">
+                <h1>Search for a city:</h1>
+                <input id="input-city" class="my-1" type="text" placeholder="City Name">
+                <button class="my-1 bg-primary" id="search-btn">Search</button>
+            </div>
+            <ul id="saved-cities-list">
+                <!-- saved cities -->
+            </ul>
+        </section>
+        <section class="col-12 col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <h1>Today</h1>
+                    <p class="card-text">Info about the day</p>
+                </div>
+            </div>
+            <div class="py-3">
+                <h2>5-Day Forecast:</h2>
+                <div id="forecast-cards" class="d-flex justify-content-between">
+                    <div class="card col-12 col-md-2">
+                        <h3>Date</h3>
+                        <p>info about future days</p>
+                    </div>
+                    <div class="card col-12 col-md-2"></div>
+                    <div class="card col-12 col-md-2"></div>
+                    <div class="card col-12 col-md-2"></div>
+                    <div class="card col-12 col-md-2"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
