@@ -15,9 +15,6 @@ var searchCity = function (event) {
     if (!inputCity) {
         console.log('You must type in a city name');
         return;
-    } else {
-        // TODO log city name for testing
-        console.log(inputCity);
     }
     // call retrieveCityData
     retrieveCityData(inputCity);
@@ -62,29 +59,66 @@ function retrieveCityData(city) {
                 var lon = ldata[0].lon; // city's longetude
 
                 // create final api call
-                var openWeatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly,alerts&appid=' + apiKey;
+                var openWeatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
                 // fetch using api call url
                 // fetch data from openWeatherAPI
                 fetch(openWeatherUrl).then(function (response) {
                     if (response.ok) {
                         response.json().then(function (data) {
                             // call function to display data
-                            displayWeatherData(data);
+                            displayWeatherData(data, city);
                         })
                     } else {
-                        console.log('Error retrieving data: ' + response.status);
+                        console.log('Error retrieving Weather Data: ' + response.status);
                     }
                 });
             })
         } else {
-            console.log("Error retrieving Lat and Lon:" + response.status);
+            console.log("Error retrieving City Data:" + response.status);
         }
-    })
+    });
 }
 
-function displayWeatherData(data) {
+function displayWeatherData(data, city) {
     // TODO parse the data and display it on the screen
     console.log(data);
+
+    // remove previous displayed data
+    forecastSectionEl.empty();
+
+    // create the current day forecast card
+    var currentDayEl = $('<div class="card">'); // gets appended to the section
+    var cardBody = $('<div class="card-body">'); // gets appended to currentDayEl
+    var locationDate = $('<h1 class="card-title">'); // gets appended to cardBody
+    var temp = $('<p>'); // gets appended to cardBody
+    var wind = $('<p>'); // gets appended to cardBody
+    var humidity = $('<p>'); // gets appended to cardBody
+    var uvIndex = $('<p>'); // gets appended to cardBody
+    var currentDate = moment(data.current.dt, 'X').format('DD/MM/YY');
+
+    // TODO add weather icon/emoji to end of locationDate.text
+    locationDate.text(city + ' ' + currentDate);
+    temp.text('Temp: ' + data.current.temp);
+    wind.text('Wind speed: ' + data.current.wind_speed + ' MPH');
+    humidity.text('Humidity: ' + data.current.humidity + ' %');
+    uvIndex.text('UV Index: ' + data.current.uvi);
+
+    cardBody.append(locationDate);
+    cardBody.append(temp);
+    cardBody.append(wind);
+    cardBody.append(humidity);
+    cardBody.append(uvIndex);
+    currentDayEl.append(cardBody);
+    forecastSectionEl.append(currentDayEl);
+
+    var fiveDayEl = $('<div class="py-3">');
+    var fiveDayHeader = $('<h2>');
+    fiveDayHeader.text('5-Day Forecast:');
+    fiveDayEl.append(fiveDayHeader);
+    // create the 5-day forecast cards
+    for (var i = 0; i < 5; i++) {
+
+    }
 }
 
 // TODO save list of favorite cities to localstorage
