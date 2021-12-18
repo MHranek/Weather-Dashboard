@@ -77,8 +77,7 @@ function retrieveCityData(city) {
 }
 
 function displayWeatherData(data, city) {
-    // TODO parse the data and display it on the screen
-    console.log(data);
+    // console.log(data);
 
     // remove previous displayed data
     forecastSectionEl.empty();
@@ -91,17 +90,18 @@ function displayWeatherData(data, city) {
     var wind = $('<p>'); // gets appended to cardBody
     var humidity = $('<p>'); // gets appended to cardBody
     var uvIndex = $('<p>'); // gets appended to cardBody
-    var currentDate = moment(data.current.dt, 'X').format('DD/MM/YY');
+    var currentDate = moment(data.current.dt, 'X').format('MM/DD/YY');
     var currentIcon = $('<img>');
-    currentIcon.attr('src', 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png')
 
-    // TODO add weather icon/emoji to end of locationDate.text
+    currentIcon.attr('src', 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png')
+    currentIcon.attr('alt', data.current.weather[0].description);
     locationDate.text(city + ' ' + currentDate);
     temp.text('Temp: ' + data.current.temp);
     wind.text('Wind speed: ' + data.current.wind_speed + ' MPH');
     humidity.text('Humidity: ' + data.current.humidity + ' %');
     uvIndex.text('UV Index: ' + data.current.uvi);
 
+    locationDate.append(currentIcon);
     cardBody.append(locationDate);
     cardBody.append(temp);
     cardBody.append(wind);
@@ -119,7 +119,7 @@ function displayWeatherData(data, city) {
     fiveDayEl.append(forecastCards);
     forecastSectionEl.append(fiveDayEl);
     
-    for (var i = 0; i < 5; i++) {
+    for (var i = 1; i < 6; i++) {
         var smallCard = $('<section class="card col-12 col-md-2">');
         var smallDate = $('<h3>');
         var smallIcon = $('<img>');
@@ -127,7 +127,7 @@ function displayWeatherData(data, city) {
         var smallWind = $('<p>');
         var smallHumidity = $('<p>');
 
-        smallDate.text(moment(data.daily[i].dt, 'X').format('DD/MM/YY'));
+        smallDate.text(moment(data.daily[i].dt, 'X').format('MM/DD/YY'));
         smallIcon.attr('src', 'https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png');
         smallIcon.attr('alt', data.daily[i].weather[0].description);
         smallIcon.attr('height', '50px');
