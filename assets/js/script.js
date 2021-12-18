@@ -18,9 +18,6 @@ var searchCity = function (event) {
     }
     // call retrieveCityData
     retrieveCityData(inputCity);
-
-    // call function to save user search as a favorite city in the list
-    saveCityName(inputCity);
 }
 
 function saveCityName(city) {
@@ -31,7 +28,7 @@ function saveCityName(city) {
         // create button element with city name as value
         var favCityBtn = $('<button>');
         favCityBtn.text(city);
-        favCityBtn.attr('class', 'my-1 col-12 bg-success');
+        favCityBtn.attr('class', 'my-1 col-12 bg-secondary');
         savedCitiesListEl.append(favCityBtn);
 
         // adding city to the array of saved cities, later to be kept on localstorage
@@ -40,7 +37,7 @@ function saveCityName(city) {
         // reset input field
         inputCityEl.val('');
 
-        // TODO if savedCities > 10 remove first element
+        // TODO BONUS if savedCities > 10 remove first element
     }
 }
 
@@ -51,6 +48,12 @@ function retrieveCityData(city) {
     fetch(mapsUrl).then(function (response) {
         if (response.ok) {
             response.json().then(function (ldata) {
+                // checks if returned data is undefined (ie: no city with that name)
+                if (ldata[0] === undefined) {
+                    // no latitude propery found\
+                    console.log("City not found");
+                    return;
+                }
                 // use data to get lat and lon
                 var lat = ldata[0].lat; // city's latitude
                 var lon = ldata[0].lon; // city's longetude
@@ -64,6 +67,8 @@ function retrieveCityData(city) {
                         response.json().then(function (data) {
                             // call function to display data
                             displayWeatherData(data, city);
+                            // call function to save user search as a favorite city in the list
+                            saveCityName(city);
                         })
                     } else {
                         console.log('Error retrieving Weather Data: ' + response.status);
@@ -77,13 +82,14 @@ function retrieveCityData(city) {
 }
 
 function displayWeatherData(data, city) {
-    // console.log(data);
-
     // remove previous displayed data
     forecastSectionEl.empty();
 
+    // make a divider between the search section and data section
+    forecastSectionEl.attr('style', 'border-left: 3px solid black');
+
     // create the current day forecast card
-    var currentDayEl = $('<div class="card">'); // gets appended to the section
+    var currentDayEl = $('<div class="card" id="current-day">'); // gets appended to the section
     var cardBody = $('<div class="card-body">'); // gets appended to currentDayEl
     var locationDate = $('<h1 class="card-title">'); // gets appended to cardBody
     var temp = $('<p>'); // gets appended to cardBody
@@ -113,14 +119,14 @@ function displayWeatherData(data, city) {
     // create the 5-day forecast cards
     var fiveDayEl = $('<div class="py-3">');
     var fiveDayHeader = $('<h2>');
-    var forecastCards = $('<section class="d-flex justify-content-between">');
+    var forecastCards = $('<section class="d-flex justify-content-between justify-content-lg-around flex-wrap">');
     fiveDayHeader.text('5-Day Forecast:');
     fiveDayEl.append(fiveDayHeader);
     fiveDayEl.append(forecastCards);
     forecastSectionEl.append(fiveDayEl);
-    
+
     for (var i = 1; i < 6; i++) {
-        var smallCard = $('<section class="card col-12 col-md-2">');
+        var smallCard = $('<section class="card col-12 col-lg-5 col-xl-2 small-card my-1 p-3">');
         var smallDate = $('<h3>');
         var smallIcon = $('<img>');
         var smallTemp = $('<p>');

@@ -1,3 +1,7 @@
+body {
+    font-size: 24px;
+}
+
 button {
     border-radius: 5px;
     font-size:26px;
@@ -8,14 +12,16 @@ input {
     font-size:30px;
 }
 
-#forecast-cards {
-    height: 200px;
-}
-
-.card {
-    border-width: 3px;
-}
-
 #search-window {
     border-bottom: 3px solid black;
+}
+
+.small-card {
+    background-color: rgb(46, 46, 138);
+    color:white;
+    border-radius: 0;
+}
+
+#current-day {
+    background-color: rgb(119, 119, 255);
 }
