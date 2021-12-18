@@ -4,7 +4,7 @@ var savedCitiesListEl = $('#saved-cities-list');
 var forecastSectionEl = $('#forecast-section');
 var inputCityEl = $('#input-city');
 
-var apiKey = '';
+var apiKey = '2b961d95742301fadceba231bbd02ad7';
 var savedCities = [];
 
 // Search for a city
@@ -20,7 +20,7 @@ var searchCity = function (event) {
         console.log(inputCity);
     }
     // call retrieveCityData
-    // retrieveCityData(inputCity);
+    retrieveCityData(inputCity);
 
     // call function to save user search as a favorite city in the list
     saveCityName(inputCity);
@@ -49,25 +49,42 @@ function saveCityName(city) {
 
 function retrieveCityData(city) {
     // create api url
-    var lat; // city's latitude
-    var lon; // city's longetude
-    var openWeatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly,alerts&appid=' + apiKey;
-    // fetch data from openWeatherAPI
-    fetch(openWeatherUrl).then(function (response){
+    var mapsUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&limit=1&appid=' + apiKey;
+    // get lat and lon from mapsUrl
+    fetch(mapsUrl).then(function (response) {
         if (response.ok) {
-            response.json().then(function (data) {
-                // do something with the data
-                // call function to display data
-                displayWeatherData(data);
+            response.json().then(function (ldata) {
+                // use data to get lat and lon
+                console.log(ldata);
+
+                // set lat and lon
+                var lat = ldata[0].lat; // city's latitude
+                var lon = ldata[0].lon; // city's longetude
+
+                // create final api call
+                var openWeatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly,alerts&appid=' + apiKey;
+                // fetch using api call url
+                // fetch data from openWeatherAPI
+                fetch(openWeatherUrl).then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (data) {
+                            // call function to display data
+                            displayWeatherData(data);
+                        })
+                    } else {
+                        console.log('Error retrieving data: ' + response.status);
+                    }
+                });
             })
         } else {
-            console.log('Error retrieving data: ' + response.status);
+            console.log("Error retrieving Lat and Lon:" + response.status);
         }
-    });
+    })
 }
 
 function displayWeatherData(data) {
     // TODO parse the data and display it on the screen
+    console.log(data);
 }
 
 // TODO save list of favorite cities to localstorage
