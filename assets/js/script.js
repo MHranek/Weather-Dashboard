@@ -40,6 +40,9 @@ function saveCityName(city) {
         // adding city to the array of saved cities, later to be kept on localstorage
         savedCities.push(city);
 
+        // reset input field
+        inputCityEl.val('');
+
         // TODO if savedCities > 10 remove first element
     }
 }
@@ -62,5 +65,13 @@ function retrieveCityData(city) {
         }
     });
 }
+
+function displayWeatherData(data) {
+    // TODO parse the data and display it on the screen
+}
+
+// TODO save list of favorite cities to localstorage
+
+// TODO retrieve list of favorite cities from localstorage on page load
 
 searchBtnEl.on('click', searchCity);
