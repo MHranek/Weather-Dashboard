@@ -52,9 +52,6 @@ function retrieveCityData(city) {
         if (response.ok) {
             response.json().then(function (ldata) {
                 // use data to get lat and lon
-                console.log(ldata);
-
-                // set lat and lon
                 var lat = ldata[0].lat; // city's latitude
                 var lon = ldata[0].lon; // city's longetude
 
@@ -95,6 +92,8 @@ function displayWeatherData(data, city) {
     var humidity = $('<p>'); // gets appended to cardBody
     var uvIndex = $('<p>'); // gets appended to cardBody
     var currentDate = moment(data.current.dt, 'X').format('DD/MM/YY');
+    var currentIcon = $('<img>');
+    currentIcon.attr('src', 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png')
 
     // TODO add weather icon/emoji to end of locationDate.text
     locationDate.text(city + ' ' + currentDate);
@@ -111,13 +110,39 @@ function displayWeatherData(data, city) {
     currentDayEl.append(cardBody);
     forecastSectionEl.append(currentDayEl);
 
+    // create the 5-day forecast cards
     var fiveDayEl = $('<div class="py-3">');
     var fiveDayHeader = $('<h2>');
+    var forecastCards = $('<section class="d-flex justify-content-between">');
     fiveDayHeader.text('5-Day Forecast:');
     fiveDayEl.append(fiveDayHeader);
-    // create the 5-day forecast cards
+    fiveDayEl.append(forecastCards);
+    forecastSectionEl.append(fiveDayEl);
+    
     for (var i = 0; i < 5; i++) {
+        var smallCard = $('<section class="card col-12 col-md-2">');
+        var smallDate = $('<h3>');
+        var smallIcon = $('<img>');
+        var smallTemp = $('<p>');
+        var smallWind = $('<p>');
+        var smallHumidity = $('<p>');
 
+        smallDate.text(moment(data.daily[i].dt, 'X').format('DD/MM/YY'));
+        smallIcon.attr('src', 'https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png');
+        smallIcon.attr('alt', data.daily[i].weather[0].description);
+        smallIcon.attr('height', '50px');
+        smallIcon.attr('width', '50px');
+        smallTemp.text('Temp: ' + data.daily[i].temp.day);
+        smallWind.text('Wind: ' + data.daily[i].wind_speed + ' MPH');
+        smallHumidity.text('Humidity: ' + data.daily[i].humidity + ' %');
+
+        smallCard.append(smallDate);
+        smallCard.append(smallIcon);
+        smallCard.append(smallTemp);
+        smallCard.append(smallWind);
+        smallCard.append(smallHumidity);
+
+        forecastCards.append(smallCard);
     }
 }
 
