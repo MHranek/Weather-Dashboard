@@ -15,3 +15,7 @@ input {
 .card {
     border-width: 3px;
 }
+
+#search-window {
+    border-bottom: 3px solid black;
+}

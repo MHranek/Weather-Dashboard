@@ -16,16 +16,16 @@
     </header>
     <main class="row m-2">
         <section class="col-12 col-md-3 flex-column">
-            <div class="d-flex flex-column border-bottom">
+            <div id="search-window" class="d-flex flex-column">
                 <h1>Search for a city:</h1>
                 <input id="input-city" class="my-1" type="text" placeholder="City Name">
                 <button class="my-1 bg-primary" id="search-btn">Search</button>
             </div>
-            <ul id="saved-cities-list">
+            <div id="saved-cities-list">
                 <!-- saved cities -->
-            </ul>
+            </div>
         </section>
-        <section class="col-12 col-md-9">
+        <section id="forecast-section" class="col-12 col-md-9">
             <div class="card">
                 <div class="card-body">
                     <h1>Today</h1>
