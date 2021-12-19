@@ -25,3 +25,8 @@ input {
 #current-day {
     background-color: rgb(119, 119, 255);
 }
+
+#uv-index {
+    border-radius: 7px;
+    padding: 0px 10px;
+}

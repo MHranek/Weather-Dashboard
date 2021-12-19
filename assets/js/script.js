@@ -93,23 +93,35 @@ function displayWeatherData(data, city) {
     var temp = $('<p>'); // gets appended to cardBody
     var wind = $('<p>'); // gets appended to cardBody
     var humidity = $('<p>'); // gets appended to cardBody
+    var uvIndexSpan = $('<span id="uv-index">');
     var uvIndex = $('<p>'); // gets appended to cardBody
     var currentDate = moment(data.current.dt, 'X').format('MM/DD/YY');
     var currentIcon = $('<img>');
 
+    // TODO uvIndex span background colors
     currentIcon.attr('src', 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png')
     currentIcon.attr('alt', data.current.weather[0].description);
     locationDate.text(city + ' ' + currentDate);
     temp.text('Temp: ' + data.current.temp);
     wind.text('Wind speed: ' + data.current.wind_speed + ' MPH');
     humidity.text('Humidity: ' + data.current.humidity + ' %');
-    uvIndex.text('UV Index: ' + data.current.uvi);
+    uvIndexSpan.text(data.current.uvi);
+    // determine the color of the uvIndex background
+    if (data.current.uvi <= 2) {
+        uvIndexSpan.attr('class', 'bg-success');
+    } else if (data.current.uvi > 2 && data.current.uvi <= 7) {
+        uvIndexSpan.attr('class', 'bg-warning');
+    } else {
+        uvIndexSpan.attr('class', 'bg-danger');
+    }
+    uvIndex.text('UV Index: ');
 
     locationDate.append(currentIcon);
     cardBody.append(locationDate);
     cardBody.append(temp);
     cardBody.append(wind);
     cardBody.append(humidity);
+    uvIndex.append(uvIndexSpan);
     cardBody.append(uvIndex);
     currentDayEl.append(cardBody);
     forecastSectionEl.append(currentDayEl);
