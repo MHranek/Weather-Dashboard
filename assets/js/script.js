@@ -35,7 +35,7 @@ function saveCityName(city) {
         savedCities.push(city);
         // if savedCities > 10 remove first element
         if (savedCities.length > 10) {
-            savedCities.splice(0,1);
+            savedCities.splice(0, 1);
             savedCitiesListEl.children().eq(0).remove();
         }
         saveToStorage();
@@ -180,13 +180,15 @@ function retrieveFromStorage() {
     // retrieve localstorage data of savedCities
     var localData = localStorage.getItem('cities');
 
-    // parse the array
-    var localData = localData.split(',');
+    if (localData != null) {
+        // parse the array
+        localData = localData.split(',');
 
-    if (localData != "") {
-        // run saveCityName(city) for each city in the array
-        for (var i=0; i < localData.length; i++) {
-        saveCityName(localData[i]);
+        if (localData != "") {
+            // run saveCityName(city) for each city in the array
+            for (var i = 0; i < localData.length; i++) {
+                saveCityName(localData[i]);
+            }
         }
     }
 }
