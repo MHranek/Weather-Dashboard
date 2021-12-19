@@ -33,9 +33,12 @@ function saveCityName(city) {
 
         // adding city to the array of saved cities, later to be kept on localstorage
         savedCities.push(city);
+        // if savedCities > 10 remove first element
+        if (savedCities.length > 10) {
+            savedCities.splice(0,1);
+            savedCitiesListEl.children().eq(0).remove();
+        }
         saveToStorage();
-
-        // TODO BONUS if savedCities > 10 remove first element
     }
 }
 
@@ -98,24 +101,27 @@ function displayWeatherData(data, city) {
     var currentDate = moment(data.current.dt, 'X').format('MM/DD/YY');
     var currentIcon = $('<img>');
 
-    // TODO uvIndex span background colors
+    // add content to the elements
     currentIcon.attr('src', 'https://openweathermap.org/img/w/' + data.current.weather[0].icon + '.png')
     currentIcon.attr('alt', data.current.weather[0].description);
     locationDate.text(city + ' ' + currentDate);
-    temp.text('Temp: ' + data.current.temp);
+    temp.text('Temp: ' + data.current.temp + '°F');
     wind.text('Wind speed: ' + data.current.wind_speed + ' MPH');
     humidity.text('Humidity: ' + data.current.humidity + ' %');
     uvIndexSpan.text(data.current.uvi);
     // determine the color of the uvIndex background
     if (data.current.uvi <= 2) {
         uvIndexSpan.attr('class', 'bg-success');
-    } else if (data.current.uvi > 2 && data.current.uvi <= 7) {
+    } else if (data.current.uvi > 2 && data.current.uvi <= 5) {
         uvIndexSpan.attr('class', 'bg-warning');
+    } else if (data.current.uvi > 5 && data.current.uvi <= 7) {
+        uvIndexSpan.attr('class', 'bg-orange');
     } else {
         uvIndexSpan.attr('class', 'bg-danger');
     }
     uvIndex.text('UV Index: ');
 
+    // append the elements
     locationDate.append(currentIcon);
     cardBody.append(locationDate);
     cardBody.append(temp);
@@ -143,21 +149,22 @@ function displayWeatherData(data, city) {
         var smallWind = $('<p>');
         var smallHumidity = $('<p>');
 
+        // add content to the elements
         smallDate.text(moment(data.daily[i].dt, 'X').format('MM/DD/YY'));
         smallIcon.attr('src', 'https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png');
         smallIcon.attr('alt', data.daily[i].weather[0].description);
         smallIcon.attr('height', '50px');
         smallIcon.attr('width', '50px');
-        smallTemp.text('Temp: ' + data.daily[i].temp.day);
+        smallTemp.text('Temp: ' + data.daily[i].temp.day + '°F');
         smallWind.text('Wind: ' + data.daily[i].wind_speed + ' MPH');
         smallHumidity.text('Humidity: ' + data.daily[i].humidity + ' %');
 
+        // append the elements
         smallCard.append(smallDate);
         smallCard.append(smallIcon);
         smallCard.append(smallTemp);
         smallCard.append(smallWind);
         smallCard.append(smallHumidity);
-
         forecastCards.append(smallCard);
     }
 }

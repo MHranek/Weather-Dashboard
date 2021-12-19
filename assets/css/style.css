@@ -30,3 +30,7 @@ input {
     border-radius: 7px;
     padding: 0px 10px;
 }
+
+.bg-orange {
+    background: rgb(255, 136, 0);
+}
