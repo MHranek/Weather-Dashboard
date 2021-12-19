@@ -33,9 +33,7 @@ function saveCityName(city) {
 
         // adding city to the array of saved cities, later to be kept on localstorage
         savedCities.push(city);
-
-        // reset input field
-        inputCityEl.val('');
+        saveToStorage();
 
         // TODO BONUS if savedCities > 10 remove first element
     }
@@ -89,7 +87,7 @@ function displayWeatherData(data, city) {
     forecastSectionEl.attr('style', 'border-left: 3px solid black');
 
     // create the current day forecast card
-    var currentDayEl = $('<div class="card" id="current-day">'); // gets appended to the section
+    var currentDayEl = $('<section class="card" id="current-day">'); // gets appended to the section
     var cardBody = $('<div class="card-body">'); // gets appended to currentDayEl
     var locationDate = $('<h1 class="card-title">'); // gets appended to cardBody
     var temp = $('<p>'); // gets appended to cardBody
@@ -117,9 +115,9 @@ function displayWeatherData(data, city) {
     forecastSectionEl.append(currentDayEl);
 
     // create the 5-day forecast cards
-    var fiveDayEl = $('<div class="py-3">');
+    var fiveDayEl = $('<section class="py-3">');
     var fiveDayHeader = $('<h2>');
-    var forecastCards = $('<section class="d-flex justify-content-between justify-content-lg-around flex-wrap">');
+    var forecastCards = $('<div class="d-flex justify-content-between justify-content-lg-around flex-wrap">');
     fiveDayHeader.text('5-Day Forecast:');
     fiveDayEl.append(fiveDayHeader);
     fiveDayEl.append(forecastCards);
@@ -152,8 +150,34 @@ function displayWeatherData(data, city) {
     }
 }
 
-// TODO save list of favorite cities to localstorage
+// save list of favorite cities to localstorage
+function saveToStorage() {
+    // save the savedCities array to localstorage
+    localStorage.setItem('cities', savedCities);
+}
 
-// TODO retrieve list of favorite cities from localstorage on page load
+// retrieve list of favorite cities from localstorage on page load
+function retrieveFromStorage() {
+    // retrieve localstorage data of savedCities
+    var localData = localStorage.getItem('cities');
+
+    // parse the array
+    var localData = localData.split(',');
+
+    if (localData != "") {
+        // run saveCityName(city) for each city in the array
+        for (var i=0; i < localData.length; i++) {
+        saveCityName(localData[i]);
+        }
+    }
+}
+
+// run once on page load
+retrieveFromStorage()
 
 searchBtnEl.on('click', searchCity);
+savedCitiesListEl.on('click', 'button', function (event) {
+    event.preventDefault();
+    var element = $(event.target);
+    retrieveCityData(element.text());
+});
